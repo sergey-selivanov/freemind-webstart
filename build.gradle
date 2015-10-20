@@ -7,7 +7,7 @@ sourceCompatibility = 1.6
 targetCompatibility = 1.6
 mainClassName = 'org.sergeys.fmws.FreemindWebstart'
 
-ext.freemindDir = 'f:/bin/freemind-bin-max-1.0.1'
+ext.freemindDir = 'c:/bin/freemind-bin-max-1.0.1'
 ext.buildWebstartDir = 'build/webstart'
 ext.webstartBaseUrl = 'http://svs.bugz.org.ua/freemind'
 
@@ -17,8 +17,8 @@ repositories {
 }
 
 dependencies {
-    compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.0.2'
-    compile 'org.apache.logging.log4j:log4j-core:2.0.2'
+    compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.4'
+    compile 'org.apache.logging.log4j:log4j-core:2.4'
 
     compile files("${freemindDir}/lib/freemind.jar")
 }
@@ -130,7 +130,7 @@ task generateJnlp(dependsOn: [signAll, copyFiles]) << {
     collection.each {
         def resourceValues = [href: it.name]
 
-        //	println it.name + ' - ' + mainJar
+        //    println it.name + ' - ' + mainJar
 
         if (mainJar == it.name) {
             resourceValues = [href: it.name, main: 'true']

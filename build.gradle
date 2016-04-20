@@ -35,6 +35,8 @@ apply plugin: 'org.ajoberstar.release-opinion'
 apply plugin: 'net.saliman.properties'
 
 import org.ajoberstar.grgit.Grgit
+//import org.ajoberstar.grgit.*
+//import org.ajoberstar.gradle.git.release.opinion.Strategies
 
 ext.repo = Grgit.open(project.file('.'))
 
@@ -63,6 +65,7 @@ release {
     grgit = repo
 }
 
+//tasks.release.dependsOn 'build'
 
 // https://github.com/gmateo/gradle-webstart-example/blob/master/build.gradle
 

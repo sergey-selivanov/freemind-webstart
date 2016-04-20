@@ -1,15 +1,51 @@
+/**
+ * To properly substitute options, invoke specifying target environment: -PenvironmentName=mistral
+ *
+ * To make release and increase version, set stage final:
+ *
+ * gradle release -Prelease.scope=patch -Prelease.stage=final
+ * gradle release -Prelease.scope=minor -Prelease.stage=final
+ * gradle release -Prelease.scope=major -Prelease.stage=final
+ *
+ * The change scope can be either MAJOR, MINOR, or PATCH
+ * The stage of the change corresponds to the development stage (such as dev, milestone, rc, final)
+ */
+
+buildscript {
+    repositories {
+        maven {
+            url "${artifactory_contextUrl}/libs-release"
+            credentials {
+                username = "${artifactory_user}"
+                password = "${artifactory_password}"
+            }
+        }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.ajoberstar:gradle-git:1.4.2'
+        classpath 'net.saliman:gradle-properties-plugin:1.4.5'
+    }
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'application'
+apply plugin: 'org.ajoberstar.release-opinion'
+apply plugin: 'net.saliman.properties'
 
-version = '432'
+import org.ajoberstar.grgit.Grgit
+
+ext.repo = Grgit.open(project.file('.'))
+
+//version = '432'
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 mainClassName = 'org.sergeys.fmws.FreemindWebstart'
 
 ext.freemindDir = 'c:/bin/freemind-bin-max-1.0.1'
 ext.buildWebstartDir = 'build/webstart'
-ext.webstartBaseUrl = 'http://svs.bugz.org.ua/freemind'
+//ext.webstartBaseUrl = 'http://svs.bugz.org.ua/freemind'
 
 
 repositories {
@@ -17,18 +53,23 @@ repositories {
 }
 
 dependencies {
-    compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.4'
-    compile 'org.apache.logging.log4j:log4j-core:2.4'
+    compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.5'
+    compile 'org.apache.logging.log4j:log4j-core:2.5'
 
     compile files("${freemindDir}/lib/freemind.jar")
 }
+
+release {
+    grgit = repo
+}
+
 
 // https://github.com/gmateo/gradle-webstart-example/blob/master/build.gradle
 
 jar {
     manifest {
         attributes 'Implementation-Title': 'FreeMind 1.0.1',
-            'Implementation-Version': version,
+            'Implementation-Version': version.toString(),
             'Permissions': 'all-permissions',
             'Application-Name': 'FreeMind 1.0.1'
     }
@@ -114,13 +155,13 @@ task generateJnlp(dependsOn: [signAll, copyFiles]) << {
     def root = new XmlParser().parse(jnlpTemplateFile)
     def jnlpFileName = "freemind.jnlp"
 
-    root.@codebase = webstartBaseUrl
+    root.@codebase = project.filterTokens.'webstartBaseUrl'
     root.@href = jnlpFileName
 
     def information = root.information[0]
 
     def icon = information.icon[0]
-    icon.@href = webstartBaseUrl + '/FreeMind-256.png'
+    icon.@href = project.filterTokens.'webstartBaseUrl' + '/FreeMind-256.png'
 
 
     def resource = root.resources[0]

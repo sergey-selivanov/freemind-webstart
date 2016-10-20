@@ -23,8 +23,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'org.ajoberstar:gradle-git:1.4.2'
-        classpath 'net.saliman:gradle-properties-plugin:1.4.5'
+        classpath 'org.ajoberstar:gradle-git:1.5.1'
+        classpath 'net.saliman:gradle-properties-plugin:1.4.6'
     }
 }
 
@@ -55,8 +55,8 @@ repositories {
 }
 
 dependencies {
-    compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.5'
-    compile 'org.apache.logging.log4j:log4j-core:2.5'
+    compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.7'
+    compile 'org.apache.logging.log4j:log4j-core:2.7'
 
     compile files("${freemindDir}/lib/freemind.jar")
 }

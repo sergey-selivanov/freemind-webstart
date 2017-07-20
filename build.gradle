@@ -23,8 +23,9 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'org.ajoberstar:gradle-git:1.5.1'
+        classpath 'org.ajoberstar:gradle-git:1.7.2'
         classpath 'net.saliman:gradle-properties-plugin:1.4.6'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
     }
 }
 
@@ -33,6 +34,7 @@ apply plugin: 'eclipse'
 apply plugin: 'application'
 apply plugin: 'org.ajoberstar.release-opinion'
 apply plugin: 'net.saliman.properties'
+apply plugin: 'com.github.ben-manes.versions'
 
 import org.ajoberstar.grgit.Grgit
 //import org.ajoberstar.grgit.*
@@ -55,8 +57,8 @@ repositories {
 }
 
 dependencies {
-    compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.7'
-    compile 'org.apache.logging.log4j:log4j-core:2.7'
+    compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.8.2'
+    compile 'org.apache.logging.log4j:log4j-core:2.8.2'
 
     compile files("${freemindDir}/lib/freemind.jar")
 }
